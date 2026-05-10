@@ -1,3 +1,15 @@
+/*
+Practical no:3
+Q3. Create a Node.js file that will convert the output "Full Stack!" into reverse string.
+Steps to Create:
+1. Create folder: `nodejs`
+2. Create file: `slip2.js`
+Steps to Execute:
+1. Open terminal in `nodejs` folder.
+2. Run: `node slip2.js`
+3. Access `http://localhost:3011` in browser.
+*/
+
 // Q.1) Create a Node.js file that will convert the output "Full Stack!" into reverse string.
 const http = require('http');
 const PORT = 3011;

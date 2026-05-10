@@ -1,3 +1,13 @@
+/*
+Practical no:12
+Q12. Create a Node.js file that writes an HTML form, with a concatenate two string.
+Steps to Create:
+1. Create file: `nodejs/slip9.js`
+Steps to Execute:
+1. Run: `node slip9.js`
+2. Open `http://localhost:3004`
+*/
+
 // Q.1) Create a Node.js file that writes an HTML form, with a concatenate two string.
 const http = require('http');
 const { parse } = require('querystring');

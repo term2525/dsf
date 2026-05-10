@@ -1,3 +1,15 @@
+/*
+Practical no:4
+Q4. Using node js create a web page to read two file names from the user and append contents of the first file into the second file.
+Steps to Create:
+1. Create folder: `nodejs`
+2. Create file: `slip2b.js`
+3. Create sample files `a.txt` and `b.txt` in the same directory.
+Steps to Execute:
+1. Run: `node slip2b.js`
+2. Open `http://localhost:3000`, enter `a.txt` and `b.txt`, then click Append.
+*/
+
 // Q.2) Using node js create a web page to read two file names from user and append contents of first file into second file.
 const http = require('http');
 const fs = require('fs');

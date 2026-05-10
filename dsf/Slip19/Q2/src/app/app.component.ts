@@ -1,3 +1,14 @@
+/*
+Practical no:15
+Q15. Using angular js create a SPA to accept the details such as name, mobile number, pin code and email address and make validation.
+Steps to Create:
+1. Create project: `ng new slip19 --defaults`
+2. Navigate to: `slip19/src/app/`
+Steps to Execute:
+1. Run: `ng serve`
+2. Open `http://localhost:4200` to test validations.
+*/
+
 // Q.2) Using angular js create a SPA to accept the details such as name, mobile number, pin code and email address and make validation. Name should contain character only, address should contain SPPU M.Sc. Computer Science Syllabus 2023-24, mobile number should contain only 10 digit, Pin code should contain only 6 digit, email id should contain only one @, . Symbol.
 
 import { Component } from '@angular/core';

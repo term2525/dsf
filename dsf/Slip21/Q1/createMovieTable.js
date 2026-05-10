@@ -1,3 +1,9 @@
+/*
+Q1. Create Movie Database and Table (Using Array Simulation).
+Steps to Create: 1. Create `createMovieTable.js`.
+Steps to Execute: 1. Run `node createMovieTable.js`.
+*/
+
 // Q.1) Create a Node.js file that demonstrate create Movie database and table in MySQL
 const movieDB = {
   films: []

@@ -1,3 +1,9 @@
+/*
+Q1. Node.js Recipe Book.
+Steps to Create: 1. Create `recipeBook.js`.
+Steps to Execute: 1. Run `node recipeBook.js`. 2. Access `http://localhost:3000`.
+*/
+
 // Q.1) Using node js create a Recipe Book.
 const http = require('http');
 const server = http.createServer((req, res) => {

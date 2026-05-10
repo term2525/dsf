@@ -1,3 +1,15 @@
+/*
+Practical no:6
+Q6. Create a Node.js file that writes an HTML form, with an upload field.
+Steps to Create:
+1. Create folder: `nodejs`
+2. Create file: `upload.js`
+3. Install formidable: `npm install formidable`
+Steps to Execute:
+1. Run: `node upload.js`
+2. Open `http://localhost:8080`, select a file and upload.
+*/
+
 // Q.1) Create a Node.js file that writes an HTML form, with an upload field.
 var http = require('http');
 var formidable = require('formidable');

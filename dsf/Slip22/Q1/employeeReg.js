@@ -1,3 +1,9 @@
+/*
+Q1. Node.js Employee Registration Form Validation.
+Steps to Create: 1. Create `index.html` and `employeeReg.js`.
+Steps to Execute: 1. Run `node employeeReg.js`. 2. Open `http://localhost:3032`.
+*/
+
 // Q.1) Using node js create an Employee Registration Form validation.
 const http = require('http');
 const fs = require('fs');
