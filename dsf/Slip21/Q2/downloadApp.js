@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q2. Express.js File Download Prompt.
 Steps to Create: 1. Create `downloadApp.js`.
 Steps to Execute: 1. Run `node downloadApp.js`. 2. Access `http://localhost:8082/download`.

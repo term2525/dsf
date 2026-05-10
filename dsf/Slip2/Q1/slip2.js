@@ -1,5 +1,6 @@
 /*
 Practical no:3
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q3. Create a Node.js file that will convert the output "Full Stack!" into reverse string.
 Steps to Create:
 1. Create folder: `nodejs`

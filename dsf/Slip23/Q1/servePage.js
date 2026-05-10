@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q1. Serve a Web Page from a File.
 Steps to Create: 1. Create `servePage.js`.
 Steps to Execute: 1. Run `node servePage.js`.

@@ -1,5 +1,6 @@
 /*
 Practical no:10
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q10. Create a Simple Web Server using node js.
 Steps to Create:
 1. Create file: `nodejs/slip14.js` (Server)

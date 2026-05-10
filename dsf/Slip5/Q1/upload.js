@@ -1,5 +1,6 @@
 /*
 Practical no:6
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q6. Create a Node.js file that writes an HTML form, with an upload field.
 Steps to Create:
 1. Create folder: `nodejs`

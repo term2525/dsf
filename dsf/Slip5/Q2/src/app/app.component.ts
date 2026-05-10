@@ -1,5 +1,6 @@
 /*
 Practical no:7
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q7. Using angular js create a SPA to carry out validation for a username entered in a textbox. If the textbox is blank, alert “Enter username”. If the number of characters is less than three, alert ‟ Username is too short”. If the value entered is appropriate the print “Valid username” and password should be a minimum of 8 characters.
 Steps to Create:
 1. Install Angular CLI: `npm install -g @angular/cli`

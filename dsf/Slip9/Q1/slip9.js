@@ -1,5 +1,6 @@
 /*
 Practical no:12
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q12. Create a Node.js file that writes an HTML form, with a concatenate two string.
 Steps to Create:
 1. Create file: `nodejs/slip9.js`

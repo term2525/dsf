@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q1. Node.js Recipe Book.
 Steps to Create: 1. Create `recipeBook.js`.
 Steps to Execute: 1. Run `node recipeBook.js`. 2. Access `http://localhost:3000`.

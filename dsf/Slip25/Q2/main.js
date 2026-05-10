@@ -1,5 +1,6 @@
 /*
 Practical no:10
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q10. Create a node js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a callback function when one of those events is detected.
 Steps to Create:
 1. Create file: `nodejs/slip7.js` (Event Driven)

@@ -1,5 +1,6 @@
 /*
 Practical no:4
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q4. Using node js create a web page to read two file names from the user and append contents of the first file into the second file.
 Steps to Create:
 1. Create folder: `nodejs`

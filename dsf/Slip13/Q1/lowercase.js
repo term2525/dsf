@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q1. Node.js Convert "HELLO WORLD!" to Lowercase.
 Steps to Create: 1. Create `lowercase.js`.
 Steps to Execute: 1. Run `node lowercase.js`. 2. Access `http://localhost:8089`.

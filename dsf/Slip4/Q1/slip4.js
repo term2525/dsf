@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q1. Using node js create an eLearning System.
 Steps to Create: 
 1. Create `slip4.html` (frontend) and `slip4.js` (server). 

@@ -1,4 +1,5 @@
 /*
+sudo code /directory-to-open --user-data-dir='.' --no-sandbox
 Q2. Node.js Serve Requested File, 404 if Missing.
 Steps to Create: 1. Create `serveFile.js`.
 Steps to Execute: 1. Run `node serveFile.js`. 2. Access `http://localhost:8080/filename`.
