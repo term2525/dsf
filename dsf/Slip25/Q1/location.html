@@ -1,0 +1,14 @@
+<!-- Q.1) Create an angular JS Application that shows the location of the current web page. -->
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <h3>URL: {{myUrl}}</h3>
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $location) {
+      $scope.myUrl = $location.absUrl();
+    });
+  </script>
+</body>
+</html>

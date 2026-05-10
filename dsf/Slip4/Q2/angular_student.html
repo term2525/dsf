@@ -1,0 +1,29 @@
+<!-- Q.2) Create an HTML form using AngularJS that contain the Student Registration details and validate Student first and last name as it should not contain other than alphabets and age should be between 18 to 50 and display greeting message depending on current time using ng-show (e.g. Good Morning, Good Afternoon, etc.)(Use AJAX). -->
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <h2 ng-show="isMorning">Good Morning!</h2>
+  <h2 ng-show="isAfternoon">Good Afternoon!</h2>
+  <h2 ng-show="isEvening">Good Evening!</h2>
+
+  <form name="studentForm" novalidate>
+    First Name: <input type="text" name="fname" ng-model="fname" ng-pattern="/^[a-zA-Z]+$/" required><br>
+    Last Name: <input type="text" name="lname" ng-model="lname" ng-pattern="/^[a-zA-Z]+$/" required><br>
+    Age: <input type="number" ng-model="age" min="18" max="50" required><br>
+    <button ng-disabled="studentForm.$invalid">Register</button>
+  </form>
+
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+      var h = new Date().getHours();
+      $scope.isMorning = h < 12;
+      $scope.isAfternoon = h >= 12 && h < 17;
+      $scope.isEvening = h >= 17;
+    });
+  </script>
+</body>
+</html>

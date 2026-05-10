@@ -1,0 +1,48 @@
+<!-- Q.1) Create an HTML form for Login and write a JavaScript to validate email ID and Password using Regular Expression. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  <script>
+    function validation() {
+      let isValid = true;
+      var email = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value.trim();
+      document.getElementById("emailError").innerText = "";
+      document.getElementById("passwordError").innerText = "";
+
+      let regEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/;
+      let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$/;
+
+      if (!regEmail.test(email)) {
+        document.getElementById("emailError").innerText = "Enter a valid email";
+        isValid = false;
+      }
+      if (!regPassword.test(password)) {
+        document.getElementById("passwordError").innerText = "Enter a valid password (min 6 chars, one upper, one lower, one digit)";
+        isValid = false;
+      }
+      if (isValid) {
+        alert("Form successfully submitted");
+        return true;
+      }
+      return false;
+    }
+  </script>
+</head>
+<body>
+  <form align="center" style="border:2px solid black; padding:20px;" onsubmit="return validation()">
+    <h2>Login</h2>
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter name"><br><br>
+    <label>Email</label>
+    <input type="text" id="email" placeholder="Enter email"><br>
+    <span id="emailError" style="color:red"></span><br>
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Enter password"><br>
+    <span id="passwordError" style="color:red"></span><br>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

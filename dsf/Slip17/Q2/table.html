@@ -1,0 +1,32 @@
+<!-- Q.2) Using angular js display the 10 student details in Table format (using ng-repeat directive use Array to store data) -->
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <table border="1">
+    <tr><th>Name</th><th>Course</th></tr>
+    <tr ng-repeat="student in students">
+      <td>{{ student.name }}</td>
+      <td>{{ student.course }}</td>
+    </tr>
+  </table>
+
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+      $scope.students = [
+        {name:'Amit Sharma', course:'BSc Computer Science'},
+        {name:'Priya Patel', course:'BCA'},
+        {name:'Rahul Verma', course:'MCA'},
+        {name:'Sneha Iyer', course:'BSc IT'},
+        {name:'Karan Mehta', course:'BTech Computer Engineering'},
+        {name:'Neha Gupta', course:'BSc Data Science'},
+        {name:'Arjun Reddy', course:'BCA'},
+        {name:'Pooja Singh', course:'MSc Computer Science'},
+        {name:'Vikram Desai', course:'BSc Software Development'},
+        {name:'Anjali Nair', course:'BSc Artificial Intelligence'}
+      ];
+    });
+  </script>
+</body>
+</html>

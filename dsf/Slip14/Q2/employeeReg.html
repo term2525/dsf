@@ -1,0 +1,39 @@
+<!-- Q.2) Create an HTML form that contain the Employee Registration details and write a JavaScript to validate DOB, Joining Date, and Salary. -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee Registration</title>
+  <script>
+    function validate() {
+      let dob = document.getElementById("dob").value;
+      let joinDate = document.getElementById("joinDate").value;
+      let salary = document.getElementById("salary").value;
+      let errors = [];
+
+      if (!dob) errors.push("DOB required");
+      if (!joinDate) errors.push("Joining date required");
+      if (!salary || isNaN(salary) || salary <= 0) errors.push("Salary must be a positive number");
+
+      let dobDate = new Date(dob);
+      let joinDateDate = new Date(joinDate);
+      if (dobDate >= joinDateDate) errors.push("Joining date must be after DOB");
+
+      if (errors.length > 0) {
+        alert(errors.join("\n"));
+        return false;
+      }
+      alert("Registration successful");
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <h2>Employee Registration</h2>
+  <form onsubmit="return validate()">
+    DOB: <input type="date" id="dob"><br><br>
+    Joining Date: <input type="date" id="joinDate"><br><br>
+    Salary: <input type="number" id="salary" step="0.01"><br><br>
+    <input type="submit" value="Register">
+  </form>
+</body>
+</html>

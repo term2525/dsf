@@ -1,0 +1,21 @@
+<!-- Q.1) Using angular js Create a SPA that show Syllabus content of all subjects of M.Sc (CS) Sem-II (use ng-view) -->
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>
+<body ng-app="myApp">
+  <a href="#!syllabus">Syllabus</a>
+  <div ng-view></div>
+
+  <script>
+    var app = angular.module('myApp', ['ngRoute']);
+    app.config(function($routeProvider) {
+      $routeProvider
+      .when('/syllabus', {
+        template: '<h2>M.Sc (CS) Sem II Syllabus</h2><ul><li>Full Stack Development</li><li>Data Science</li><li>AI</li></ul>'
+      })
+      .otherwise({redirectTo: '/syllabus'});
+    });
+  </script>
+</body>
+</html>

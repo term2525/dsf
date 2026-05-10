@@ -1,0 +1,16 @@
+<!-- Q.1) Create angular JS Application that show the current Date and Time of the System (Use Interval Service) -->
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <h1>Time: {{ theTime }}</h1>
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $interval) {
+      $interval(function () {
+        $scope.theTime = new Date().toLocaleTimeString();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

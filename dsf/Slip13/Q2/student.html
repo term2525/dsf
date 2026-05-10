@@ -1,0 +1,52 @@
+<!-- Q.2) Create an HTML form that contain the Student Registration details and write a JavaScript to validate Student first and last name as it should not contain other than alphabets and age should be between 18 to 50. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Registration</title>
+  <script>
+    function validateForm() {
+      let isValid = true;
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const age = document.getElementById('age').value.trim();
+      document.getElementById('firstNameError').textContent = "";
+      document.getElementById('lastNameError').textContent = "";
+      document.getElementById('ageError').textContent = "";
+
+      let nameRegex = /^[A-Za-z]+$/;
+      if (!nameRegex.test(firstName)) {
+        document.getElementById('firstNameError').textContent = "First name should only contain alphabets.";
+        isValid = false;
+      }
+      if (!nameRegex.test(lastName)) {
+        document.getElementById('lastNameError').textContent = "Last name should only contain alphabets.";
+        isValid = false;
+      }
+      if (!age || age < 18 || age > 50) {
+        document.getElementById('ageError').textContent = "Age must be between 18 and 50.";
+        isValid = false;
+      }
+      if (isValid) {
+        alert('Registration successful!');
+        document.getElementById('registrationForm').reset();
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Student Registration</h2>
+  <form id="registrationForm">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" placeholder="Enter first name">
+    <span id="firstNameError" style="color:red"></span><br><br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" placeholder="Enter last name">
+    <span id="lastNameError" style="color:red"></span><br><br>
+    <label for="age">Age:</label>
+    <input type="number" id="age" placeholder="Enter age">
+    <span id="ageError" style="color:red"></span><br><br>
+    <button type="button" onclick="validateForm()">Register</button>
+  </form>
+</body>
+</html>

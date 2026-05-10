@@ -1,0 +1,31 @@
+var http = require('http');
+var fs = require('fs');
+http.createServer(function(req,res) {
+  if (req.url == '/') {
+    fs.readFile('slip4.html', function(err,data) {
+      res.writeHead(200, {'Content-Type':'text/html'});
+      res.write(data);
+      res.end();
+    });
+  } else if (req.url == '/html_tutorial') {
+    fs.readFile('html_tutorial.pdf', function(err,data) {
+      res.writeHead(200, {'Content-Type':'application/pdf'});
+      res.write(data);
+      res.end();
+    });
+  } else if (req.url == '/nodejs_tutorial') {
+    fs.readFile('nodejs_tutorial.pdf', function(err,data) {
+      res.writeHead(200, {'Content-Type':'application/pdf'});
+      res.write(data);
+      res.end();
+    });
+  } else if (req.url == '/javascript_tutorial') {
+    fs.readFile('javascript_tutorial.pdf', function(err,data) {
+      res.writeHead(200, {'Content-Type':'application/pdf'});
+      res.write(data);
+      res.end();
+    });
+  } else {
+    res.end('end');
+  }
+}).listen(3000, () => { console.log('port active') });

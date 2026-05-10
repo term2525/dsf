@@ -1,0 +1,977 @@
+Create a Node.js file that opens the requested file and returns the content to the client. If                                                                 
+   anything goes wrong, throw a 404 error.                                                                                                                       
+                                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const fs = require('fs');                                                                                                                                     
+   const { parse } = require('querystring');                                                                                                                     
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     if (req.method === 'GET') {                                                                                                                                 
+       // Show the form                                                                                                                                          
+       res.writeHead(200, { 'Content-Type': 'text/html' });                                                                                                      
+       res.end(`                                                                                                                                                 
+         <h2>File Reader</h2>                                                                                                                                    
+         <form method="POST">                                                                                                                                    
+           <input type="text" name="filename" placeholder="e.g., a.txt" required><br><br>                                                                        
+           <button type="submit">Read File</button>                                                                                                              
+         </form>                                                                                                                                                 
+       `);                                                                                                                                                       
+     }                                                                                                                                                           
+     else if (req.method === 'POST') {                                                                                                                           
+       let body = '';                                                                                                                                            
+       req.on('data', chunk => { body += chunk.toString(); });                                                                                                   
+       req.on('end', () => {                                                                                                                                     
+         const { filename } = parse(body);                                                                                                                       
+                                                                                                                                                                 
+         // Basic safety: block paths with slashes to keep reading only in current folder                                                                        
+         if (filename.includes('/') || filename.includes('\\')) {                                                                                                
+           res.writeHead(400, { 'Content-Type': 'text/html' });                                                                                                  
+           return res.end('<h3>Bad Request: please enter a simple filename, not a path.</h3><a href="/">Back</a>');                                              
+         }                                                                                                                                                       
+                                                                                                                                                                 
+         fs.readFile('./' + filename, 'utf8', (err, data) => {                                                                                                   
+           if (err) {                                                                                                                                            
+             res.writeHead(404, { 'Content-Type': 'text/html' });                                                                                                
+             return res.end(`<h3>404 – File "${filename}" not found!</h3><a href="/">Try again</a>`);                                                            
+           }                                                                                                                                                     
+           res.writeHead(200, { 'Content-Type': 'text/plain' });                                                                                                 
+           res.write(data);          // the file contents                                                                                                        
+           res.end();                                                                                                                                            
+         });                                                                                                                                                     
+       });                                                                                                                                                       
+     }                                                                                                                                                           
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   server.listen(3000, () => console.log('Server running at http://localhost:3000'));                                                                            
+                                                                                                                                                                 
+   Below are all solutions for the latest slip document you provided, with no omissions and using the array‑based approach for any database tasks. Each answer   
+   is self‑contained and follows the style of the previous solutions.                                                                                            
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 1 (Page 1)                                                                                                                                            
+   ### Q1 – Login Form with JavaScript Validation (Regex)                                                                                                        
+   **File: `login.html`**                                                                                                                                        
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html lang="en">                                                                                                                                              
+   <head>                                                                                                                                                        
+     <meta charset="UTF-8">                                                                                                                                      
+     <title>Login Form</title>                                                                                                                                   
+     <script>                                                                                                                                                    
+       function validation() {                                                                                                                                   
+         let isValid = true;                                                                                                                                     
+         var email = document.getElementById("email").value.trim();                                                                                              
+         var password = document.getElementById("password").value.trim();                                                                                        
+         document.getElementById("emailError").innerText = "";                                                                                                   
+         document.getElementById("passwordError").innerText = "";                                                                                                
+                                                                                                                                                                 
+         let regEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]{2,3}$/;                                                                                            
+         let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$/;                                                                                           
+                                                                                                                                                                 
+         if (!regEmail.test(email)) {                                                                                                                            
+           document.getElementById("emailError").innerText = "Enter a valid email";                                                                              
+           isValid = false;                                                                                                                                      
+         }                                                                                                                                                       
+         if (!regPassword.test(password)) {                                                                                                                      
+           document.getElementById("passwordError").innerText = "Enter a valid password (min 6 chars, one upper, one lower, one digit)";                         
+           isValid = false;                                                                                                                                      
+         }                                                                                                                                                       
+         if (isValid) {                                                                                                                                          
+           alert("Form successfully submitted");                                                                                                                 
+           return true;                                                                                                                                          
+         }                                                                                                                                                       
+         return false;                                                                                                                                           
+       }                                                                                                                                                         
+     </script>                                                                                                                                                   
+   </head>                                                                                                                                                       
+   <body>                                                                                                                                                        
+     <form align="center" style="border:2px solid black; padding:20px;" onsubmit="return validation()">                                                          
+       <h2>Login</h2>                                                                                                                                            
+       <label>Name</label>                                                                                                                                       
+       <input type="text" id="name" placeholder="Enter name"><br><br>                                                                                            
+       <label>Email</label>                                                                                                                                      
+       <input type="text" id="email" placeholder="Enter email"><br>                                                                                              
+       <span id="emailError" style="color:red"></span><br>                                                                                                       
+       <label>Password</label>                                                                                                                                   
+       <input type="password" id="password" placeholder="Enter password"><br>                                                                                    
+       <span id="passwordError" style="color:red"></span><br>                                                                                                    
+       <button type="submit">Submit</button>                                                                                                                     
+     </form>                                                                                                                                                     
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Student Registration Validation (Name & Age)                                                                                                         
+   **File: `student.html`**                                                                                                                                      
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html lang="en">                                                                                                                                              
+   <head>                                                                                                                                                        
+     <meta charset="UTF-8">                                                                                                                                      
+     <title>Student Registration</title>                                                                                                                         
+     <script>                                                                                                                                                    
+       function validateForm() {                                                                                                                                 
+         let isValid = true;                                                                                                                                     
+         const firstName = document.getElementById('firstName').value.trim();                                                                                    
+         const lastName = document.getElementById('lastName').value.trim();                                                                                      
+         const age = document.getElementById('age').value.trim();                                                                                                
+         document.getElementById('firstNameError').textContent = "";                                                                                             
+         document.getElementById('lastNameError').textContent = "";                                                                                              
+         document.getElementById('ageError').textContent = "";                                                                                                   
+                                                                                                                                                                 
+         let nameRegex = /^[A-Za-z]+$/;                                                                                                                          
+         if (!nameRegex.test(firstName)) {                                                                                                                       
+           document.getElementById('firstNameError').textContent = "First name should only contain alphabets.";                                                  
+           isValid = false;                                                                                                                                      
+         }                                                                                                                                                       
+         if (!nameRegex.test(lastName)) {                                                                                                                        
+           document.getElementById('lastNameError').textContent = "Last name should only contain alphabets.";                                                    
+           isValid = false;                                                                                                                                      
+         }                                                                                                                                                       
+         if (!age || age < 18 || age > 50) {                                                                                                                     
+           document.getElementById('ageError').textContent = "Age must be between 18 and 50.";                                                                   
+           isValid = false;                                                                                                                                      
+         }                                                                                                                                                       
+         if (isValid) {                                                                                                                                          
+           alert('Registration successful!');                                                                                                                    
+           document.getElementById('registrationForm').reset();                                                                                                  
+         }                                                                                                                                                       
+       }                                                                                                                                                         
+     </script>                                                                                                                                                   
+   </head>                                                                                                                                                       
+   <body>                                                                                                                                                        
+     <h2>Student Registration</h2>                                                                                                                               
+     <form id="registrationForm">                                                                                                                                
+       <label for="firstName">First Name:</label>                                                                                                                
+       <input type="text" id="firstName" placeholder="Enter first name">                                                                                         
+       <span id="firstNameError" style="color:red"></span><br><br>                                                                                               
+       <label for="lastName">Last Name:</label>                                                                                                                  
+       <input type="text" id="lastName" placeholder="Enter last name">                                                                                           
+       <span id="lastNameError" style="color:red"></span><br><br>                                                                                                
+       <label for="age">Age:</label>                                                                                                                             
+       <input type="number" id="age" placeholder="Enter age">                                                                                                    
+       <span id="ageError" style="color:red"></span><br><br>                                                                                                     
+       <button type="button" onclick="validateForm()">Register</button>                                                                                          
+     </form>                                                                                                                                                     
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 2 (Page 2)                                                                                                                                            
+   ### Q1 – Node.js Reverse the String "Full Stack!"                                                                                                             
+   **File: `slip2.js`**                                                                                                                                          
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const PORT = 3011;                                                                                                                                            
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     res.writeHead(200, { 'Content-Type': 'text/plain' });                                                                                                       
+     const input = "Full Stack!";                                                                                                                                
+     const reversed = input.split('').reverse().join('');                                                                                                        
+     res.end('Reversed string: ' + reversed);                                                                                                                    
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   server.listen(PORT, () => {                                                                                                                                   
+     console.log('Server running at http://localhost:' + PORT);                                                                                                  
+   });                                                                                                                                                           
+   ```                                                                                                                                                           
+   Run: `node slip2.js` → open `http://localhost:3011` – Output: `Reversed string: !kcatS lluF`                                                                  
+                                                                                                                                                                 
+   ### Q2 – Node.js Append Contents of First File into Second File (Web Form)                                                                                    
+   **File: `slip2b.js`** (requires `a.txt` and `b.txt` in the same folder)                                                                                       
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const fs = require('fs');                                                                                                                                     
+   const { parse } = require('querystring');                                                                                                                     
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     if (req.method === 'GET') {                                                                                                                                 
+       res.writeHead(200, { 'Content-Type': 'text/html' });                                                                                                      
+       res.end(`<h2>File Appender</h2>                                                                                                                           
+       <form method="POST">                                                                                                                                      
+         <input type="text" name="source" placeholder="Source File (e.g., a.txt)" required><br><br>                                                              
+         <input type="text" name="dest" placeholder="Destination File (e.g., b.txt)" required><br><br>                                                           
+         <button type="submit">Append Contents</button>                                                                                                          
+       </form>`);                                                                                                                                                
+     } else if (req.method === 'POST') {                                                                                                                         
+       let body = '';                                                                                                                                            
+       req.on('data', chunk => { body += chunk.toString(); });                                                                                                   
+       req.on('end', () => {                                                                                                                                     
+         const { source, dest } = parse(body);                                                                                                                   
+         fs.readFile(source, 'utf8', (err, data) => {                                                                                                            
+           if (err) {                                                                                                                                            
+             res.writeHead(404, { 'Content-Type': 'text/html' });                                                                                                
+             return res.end(`<h3>Error: Source file "${source}" not found!</h3><a href="/">Try Again</a>`);                                                      
+           }                                                                                                                                                     
+           fs.appendFile(dest, '\n' + data, (appendErr) => {                                                                                                     
+             if (appendErr) {                                                                                                                                    
+               res.writeHead(500, { 'Content-Type': 'text/html' });                                                                                              
+               return res.end(`<h3>Error: Could not write to "${dest}"</h3>`);                                                                                   
+             }                                                                                                                                                   
+             res.writeHead(200, { 'Content-Type': 'text/html' });                                                                                                
+             res.end('<h3>Success!</h3><p>Contents appended.</p><a href="/">Back</a>');                                                                          
+           });                                                                                                                                                   
+         });                                                                                                                                                     
+       });                                                                                                                                                       
+     }                                                                                                                                                           
+   }).listen(3000, () => console.log('Server on 3000'));                                                                                                         
+   ```                                                                                                                                                           
+   Run `node slip2b.js`, open `http://localhost:3000`, enter source & dest file names, click Append.                                                             
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 3 (Page 3)                                                                                                                                            
+   ### Q1 – Node.js eLearning System                                                                                                                             
+   Two files: `slip4.html` (frontend) and `slip4.js` (server). You can reuse from earlier solutions.                                                             
+   We'll provide them again:                                                                                                                                     
+                                                                                                                                                                 
+   **File: `slip4.html`**                                                                                                                                        
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <head>                                                                                                                                                        
+     <title>eLearning System</title>                                                                                                                             
+     <style>                                                                                                                                                     
+       .split { height: 100%; width: 50%; position: fixed; top: 0; }                                                                                             
+       .left { left: 0; background-color: #f1f1f1; }                                                                                                             
+       .right { right: 0; }                                                                                                                                      
+       .centered { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }                                               
+     </style>                                                                                                                                                    
+   </head>                                                                                                                                                       
+   <body>                                                                                                                                                        
+     <h1>eLearning System</h1>                                                                                                                                   
+     <div class="split left">                                                                                                                                    
+       <div class="centered">                                                                                                                                    
+         <h1>                                                                                                                                                    
+           <a href="/html_tutorial" target="a">HTML</a><br>                                                                                                      
+           <a href="/nodejs_tutorial" target="a">Node JS</a><br>                                                                                                 
+           <a href="/javascript_tutorial" target="a">Javascript</a>                                                                                              
+         </h1>                                                                                                                                                   
+       </div>                                                                                                                                                    
+     </div>                                                                                                                                                      
+     <div class="split right">                                                                                                                                   
+       <iframe name="a" height="100%" width="100%"></iframe>                                                                                                     
+     </div>                                                                                                                                                      
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   **File: `slip4.js`** (server)                                                                                                                                 
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   var fs = require('fs');                                                                                                                                       
+   http.createServer(function(req,res) {                                                                                                                         
+     if (req.url == '/') {                                                                                                                                       
+       fs.readFile('slip4.html', function(err,data) {                                                                                                            
+         res.writeHead(200, {'Content-Type':'text/html'});                                                                                                       
+         res.write(data);                                                                                                                                        
+         res.end();                                                                                                                                              
+       });                                                                                                                                                       
+     } else if (req.url == '/html_tutorial') {                                                                                                                   
+       fs.readFile('html_tutorial.pdf', function(err,data) {                                                                                                     
+         res.writeHead(200, {'Content-Type':'application/pdf'});                                                                                                 
+         res.write(data);                                                                                                                                        
+         res.end();                                                                                                                                              
+       });                                                                                                                                                       
+     } else if (req.url == '/nodejs_tutorial') {                                                                                                                 
+       fs.readFile('nodejs_tutorial.pdf', function(err,data) {                                                                                                   
+         res.writeHead(200, {'Content-Type':'application/pdf'});                                                                                                 
+         res.write(data);                                                                                                                                        
+         res.end();                                                                                                                                              
+       });                                                                                                                                                       
+     } else if (req.url == '/javascript_tutorial') {                                                                                                             
+       fs.readFile('javascript_tutorial.pdf', function(err,data) {                                                                                               
+         res.writeHead(200, {'Content-Type':'application/pdf'});                                                                                                 
+         res.write(data);                                                                                                                                        
+         res.end();                                                                                                                                              
+       });                                                                                                                                                       
+     } else {                                                                                                                                                    
+       res.end('end');                                                                                                                                           
+     }                                                                                                                                                           
+   }).listen(3000, () => { console.log('port active') });                                                                                                        
+   ```                                                                                                                                                           
+   Run `node slip4.js`, open `http://localhost:3000`. Place the PDFs in the same folder.                                                                         
+                                                                                                                                                                 
+   ### Q2 – AngularJS Student Registration with Time‑Based Greeting                                                                                              
+   **File: `angular_student.html`**                                                                                                                              
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <head>                                                                                                                                                        
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                
+   </head>                                                                                                                                                       
+   <body ng-app="myApp" ng-controller="myCtrl">                                                                                                                  
+     <h2 ng-show="isMorning">Good Morning!</h2>                                                                                                                  
+     <h2 ng-show="isAfternoon">Good Afternoon!</h2>                                                                                                              
+     <h2 ng-show="isEvening">Good Evening!</h2>                                                                                                                  
+                                                                                                                                                                 
+     <form name="studentForm" novalidate>                                                                                                                        
+       First Name: <input type="text" name="fname" ng-model="fname" ng-pattern="/^[a-zA-Z]+$/" required><br>                                                     
+       Last Name: <input type="text" name="lname" ng-model="lname" ng-pattern="/^[a-zA-Z]+$/" required><br>                                                      
+       Age: <input type="number" ng-model="age" min="18" max="50" required><br>                                                                                  
+       <button ng-disabled="studentForm.$invalid">Register</button>                                                                                              
+     </form>                                                                                                                                                     
+                                                                                                                                                                 
+     <script>                                                                                                                                                    
+       var app = angular.module('myApp', []);                                                                                                                    
+       app.controller('myCtrl', function($scope) {                                                                                                               
+         var h = new Date().getHours();                                                                                                                          
+         $scope.isMorning = h < 12;                                                                                                                              
+         $scope.isAfternoon = h >= 12 && h < 17;                                                                                                                 
+         $scope.isEvening = h >= 17;                                                                                                                             
+       });                                                                                                                                                       
+     </script>                                                                                                                                                   
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 4 (Page 4)                                                                                                                                            
+   ### Q1 – Node.js File Upload with Formidable                                                                                                                  
+   **File: `upload.js`** (requires `npm install formidable`)                                                                                                     
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   var formidable = require('formidable');                                                                                                                       
+   var fs = require('fs');                                                                                                                                       
+                                                                                                                                                                 
+   http.createServer(function (req, res) {                                                                                                                       
+     if (req.url == '/fileupload') {                                                                                                                             
+       var form = new formidable.IncomingForm();                                                                                                                 
+       form.parse(req, function (err, fields, files) {                                                                                                           
+         res.write('File uploaded!');                                                                                                                            
+         res.end();                                                                                                                                              
+       });                                                                                                                                                       
+     } else {                                                                                                                                                    
+       res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                        
+       res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');                                                                      
+       res.write('<input type="file" name="fileupload"><br><input type="submit"></form>');                                                                       
+       res.end();                                                                                                                                                
+     }                                                                                                                                                           
+   }).listen(8080, () => console.log("Server on 8080"));                                                                                                         
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Angular SPA (Angular 2+) Username/Password Validation                                                                                                
+   Create Angular project: `ng new slip5 --defaults` (adjust name if needed), then replace the component files.                                                  
+                                                                                                                                                                 
+   **`src/app/app.component.ts`**:                                                                                                                               
+   ```typescript                                                                                                                                                 
+   import { Component } from '@angular/core';                                                                                                                    
+                                                                                                                                                                 
+   @Component({                                                                                                                                                  
+     selector: 'app-root',                                                                                                                                       
+     templateUrl: './app.component.html',                                                                                                                        
+     styleUrls: ['./app.component.css']                                                                                                                          
+   })                                                                                                                                                            
+   export class AppComponent {                                                                                                                                   
+     username: string = '';                                                                                                                                      
+     password: string = '';                                                                                                                                      
+     message: string = '';                                                                                                                                       
+                                                                                                                                                                 
+     validateForm() {                                                                                                                                            
+       if (this.username.trim() === '') {                                                                                                                        
+         alert("Enter username");                                                                                                                                
+         return;                                                                                                                                                 
+       }                                                                                                                                                         
+       if (this.username.length < 3) {                                                                                                                           
+         alert("Username is too short");                                                                                                                         
+         return;                                                                                                                                                 
+       }                                                                                                                                                         
+       if (this.password.length < 8) {                                                                                                                           
+         alert("Password must be minimum 8 characters");                                                                                                         
+         return;                                                                                                                                                 
+       }                                                                                                                                                         
+       this.message = "Valid username";                                                                                                                          
+     }                                                                                                                                                           
+   }                                                                                                                                                             
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   **`src/app/app.component.html`**:                                                                                                                             
+   ```html                                                                                                                                                       
+   <h2>User Validation SPA</h2>                                                                                                                                  
+   <form (ngSubmit)="validateForm()">                                                                                                                            
+     <label>Username:</label><br>                                                                                                                                
+     <input type="text" [(ngModel)]="username" name="username" required><br><br>                                                                                 
+     <label>Password:</label><br>                                                                                                                                
+     <input type="password" [(ngModel)]="password" name="password" required><br><br>                                                                             
+     <button type="submit">Validate</button>                                                                                                                     
+   </form>                                                                                                                                                       
+   <p>{{message}}</p>                                                                                                                                            
+   ```                                                                                                                                                           
+   Don’t forget to import `FormsModule` in `app.module.ts`.                                                                                                      
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 5 (Page 5)                                                                                                                                            
+   ### Q1 – AngularJS ng‑click Alert                                                                                                                             
+   **File: `clickAlert.html`**                                                                                                                                   
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                  
+   <body ng-app="">                                                                                                                                              
+     <button ng-click="alert('Button Clicked')">Click Me</button>                                                                                                
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Node.js Serve Requested File, 404 if Missing                                                                                                         
+   **File: `serveFile.js`**                                                                                                                                      
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   var url = require('url');                                                                                                                                     
+   var fs = require('fs');                                                                                                                                       
+                                                                                                                                                                 
+   http.createServer(function(req, res) {                                                                                                                        
+     var q = url.parse(req.url, true);                                                                                                                           
+     var filename = "." + q.pathname;                                                                                                                            
+     fs.readFile(filename, function(err, data) {                                                                                                                 
+       if (err) {                                                                                                                                                
+         res.writeHead(404, {'Content-Type': 'text/html'});                                                                                                      
+         return res.end("404 Not Found");                                                                                                                        
+       }                                                                                                                                                         
+       res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                        
+       res.write(data);                                                                                                                                          
+       return res.end();                                                                                                                                         
+     });                                                                                                                                                         
+   }).listen(8080);                                                                                                                                              
+   ```                                                                                                                                                           
+   Access `http://localhost:8080/somefile.html` – returns file content or 404.                                                                                   
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 6 (Page 6)                                                                                                                                            
+   ### Q1 – AngularJS Current Date/Time with $interval                                                                                                           
+   **File: `interval.html`**                                                                                                                                     
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                  
+   <body ng-app="myApp" ng-controller="myCtrl">                                                                                                                  
+     <h1>Time: {{ theTime }}</h1>                                                                                                                                
+     <script>                                                                                                                                                    
+       var app = angular.module('myApp', []);                                                                                                                    
+       app.controller('myCtrl', function($scope, $interval) {                                                                                                    
+         $interval(function () {                                                                                                                                 
+           $scope.theTime = new Date().toLocaleTimeString();                                                                                                     
+         }, 1000);                                                                                                                                               
+       });                                                                                                                                                       
+     </script>                                                                                                                                                   
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Node.js Event‑Driven Application (`main.js`)                                                                                                         
+   **File: `main.js`** (standalone event emitter, no server)                                                                                                     
+   ```javascript                                                                                                                                                 
+   const EventEmitter = require('events');                                                                                                                       
+   const myEmitter = new EventEmitter();                                                                                                                         
+                                                                                                                                                                 
+   myEmitter.on('data_received', (name) => {                                                                                                                     
+       console.log(name, "Understood event - Driven");                                                                                                           
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   myEmitter.emit('data_received', 'FYMSC(CS)');                                                                                                                 
+   console.log("program Ended");                                                                                                                                 
+   ```                                                                                                                                                           
+   *Optional combined server‑event version (as previously corrected):*                                                                                           
+   ```javascript                                                                                                                                                 
+   // main.js (combined)                                                                                                                                         
+   const http = require('http');                                                                                                                                 
+   const EventEmitter = require('events');                                                                                                                       
+   const myEmitter = new EventEmitter();                                                                                                                         
+                                                                                                                                                                 
+   myEmitter.on('data_received', (url) => {                                                                                                                      
+       console.log(`Event triggered: data_received for URL: ${url}`);                                                                                            
+       console.log("Understood event-driven architecture!");                                                                                                     
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+       myEmitter.emit('data_received', req.url);                                                                                                                 
+       res.writeHead(200, { 'Content-Type': 'text/html' });                                                                                                      
+       res.write('<h1>Hello World!</h1>');                                                                                                                       
+       res.end();                                                                                                                                                
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   server.listen(3011, () => {                                                                                                                                   
+       console.log('Server is running and listening on port 3011');                                                                                              
+       console.log('Event-driven application started. Waiting for events...');                                                                                   
+   });                                                                                                                                                           
+   ```                                                                                                                                                           
+   Choose the version as required.                                                                                                                               
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 7 (Page 7)                                                                                                                                            
+   ### Q1 – Simple Web Server (Node.js)                                                                                                                          
+   **File: `simpleServer.js`**                                                                                                                                   
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   http.createServer(function(req, res) {                                                                                                                        
+     res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                          
+     res.write('Hello world!');                                                                                                                                  
+     res.end();                                                                                                                                                  
+   }).listen(3000, () => console.log('Active port 3000'));                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – AngularJS Display 10 Students in a Table (ng‑repeat)                                                                                                 
+   **File: `table.html`**                                                                                                                                        
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                  
+   <body ng-app="myApp" ng-controller="myCtrl">                                                                                                                  
+     <table border="1">                                                                                                                                          
+       <tr><th>Name</th><th>Course</th></tr>                                                                                                                     
+       <tr ng-repeat="student in students">                                                                                                                      
+         <td>{{ student.name }}</td>                                                                                                                             
+         <td>{{ student.course }}</td>                                                                                                                           
+       </tr>                                                                                                                                                     
+     </table>                                                                                                                                                    
+                                                                                                                                                                 
+     <script>                                                                                                                                                    
+       var app = angular.module('myApp', []);                                                                                                                    
+       app.controller('myCtrl', function($scope) {                                                                                                               
+         $scope.students = [                                                                                                                                     
+           {name:'Amit Sharma', course:'BSc Computer Science'},                                                                                                  
+           {name:'Priya Patel', course:'BCA'},                                                                                                                   
+           {name:'Rahul Verma', course:'MCA'},                                                                                                                   
+           {name:'Sneha Iyer', course:'BSc IT'},                                                                                                                 
+           {name:'Karan Mehta', course:'BTech Computer Engineering'},                                                                                            
+           {name:'Neha Gupta', course:'BSc Data Science'},                                                                                                       
+           {name:'Arjun Reddy', course:'BCA'},                                                                                                                   
+           {name:'Pooja Singh', course:'MSc Computer Science'},                                                                                                  
+           {name:'Vikram Desai', course:'BSc Software Development'},                                                                                             
+           {name:'Anjali Nair', course:'BSc Artificial Intelligence'}                                                                                            
+         ];                                                                                                                                                      
+       });                                                                                                                                                       
+     </script>                                                                                                                                                   
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 8 (Page 8)                                                                                                                                            
+   ### Q1 – Node.js Concatenate Two Strings (Form)                                                                                                               
+   **File: `slip9.js`** (the convention name from previous solutions)                                                                                            
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const { parse } = require('querystring');                                                                                                                     
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     if (req.method === 'GET') {                                                                                                                                 
+       res.writeHead(200, {'Content-Type':'text/html'});                                                                                                         
+       res.end('<form method="POST">Name:<input name="str1"><br>Surname: <input name="str2"><br><button>Concatenate</button></form>');                           
+     } else {                                                                                                                                                    
+       let body = '';                                                                                                                                            
+       req.on('data', c => body += c);                                                                                                                           
+       req.on('end', () => {                                                                                                                                     
+         const formData = parse(body);                                                                                                                           
+         res.end("Result: " + (formData.str1 + formData.str2));                                                                                                  
+       });                                                                                                                                                       
+     }                                                                                                                                                           
+   }).listen(3004, () => console.log('Server on 3004'));                                                                                                         
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Serve File with 404 Error (same as Slip 5 Q2)                                                                                                        
+   Re‑use `serveFile.js`.                                                                                                                                        
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 9 (Page 9)                                                                                                                                            
+   ### Q1 – Node.js Convert "HELLO WORLD!" to Lowercase                                                                                                          
+   **File: `lowercase.js`**                                                                                                                                      
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     res.writeHead(200, { 'Content-Type': 'text/plain' });                                                                                                       
+     const input = "HELLO WORLD!";                                                                                                                               
+     res.end(input.toLowerCase());                                                                                                                               
+   }).listen(8089, () => console.log('Server on 8089'));                                                                                                         
+   ```                                                                                                                                                           
+   Output: `hello world!`                                                                                                                                        
+                                                                                                                                                                 
+   ### Q2 – Student Registration Validation (same as Slip 1 Q2)                                                                                                  
+   Re‑use `student.html`.                                                                                                                                        
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 10 (Page 10)                                                                                                                                          
+   ### Q1 – Simple Web Server (same as Slip 7 Q1)                                                                                                                
+   Re‑use `simpleServer.js`.                                                                                                                                     
+                                                                                                                                                                 
+   ### Q2 – Employee Registration Form (DOB, Joining Date, Salary Validation)                                                                                    
+   **File: `employeeReg.html`**                                                                                                                                  
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <head>                                                                                                                                                        
+     <title>Employee Registration</title>                                                                                                                        
+     <script>                                                                                                                                                    
+       function validate() {                                                                                                                                     
+         let dob = document.getElementById("dob").value;                                                                                                         
+         let joinDate = document.getElementById("joinDate").value;                                                                                               
+         let salary = document.getElementById("salary").value;                                                                                                   
+         let errors = [];                                                                                                                                        
+                                                                                                                                                                 
+         if (!dob) errors.push("DOB required");                                                                                                                  
+         if (!joinDate) errors.push("Joining date required");                                                                                                    
+         if (!salary || isNaN(salary) || salary <= 0) errors.push("Salary must be a positive number");                                                           
+                                                                                                                                                                 
+         let dobDate = new Date(dob);                                                                                                                            
+         let joinDateDate = new Date(joinDate);                                                                                                                  
+         if (dobDate >= joinDateDate) errors.push("Joining date must be after DOB");                                                                             
+                                                                                                                                                                 
+         if (errors.length > 0) {                                                                                                                                
+           alert(errors.join("\n"));                                                                                                                             
+           return false;                                                                                                                                         
+         }                                                                                                                                                       
+         alert("Registration successful");                                                                                                                       
+         return true;                                                                                                                                            
+       }                                                                                                                                                         
+     </script>                                                                                                                                                   
+   </head>                                                                                                                                                       
+   <body>                                                                                                                                                        
+     <h2>Employee Registration</h2>                                                                                                                              
+     <form onsubmit="return validate()">                                                                                                                         
+       DOB: <input type="date" id="dob"><br><br>                                                                                                                 
+       Joining Date: <input type="date" id="joinDate"><br><br>                                                                                                   
+       Salary: <input type="number" id="salary" step="0.01"><br><br>                                                                                             
+       <input type="submit" value="Register">                                                                                                                    
+     </form>                                                                                                                                                     
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 11 (Page 11)                                                                                                                                          
+   ### Q1 – Node.js Recipe Book                                                                                                                                  
+   **File: `recipeBook.js`**                                                                                                                                     
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                          
+     res.write('<h1>Recipe Book</h1>');                                                                                                                          
+     res.write('<ul><li>Pasta</li><li>Burger</li><li>Salad</li></ul>');                                                                                          
+     res.end();                                                                                                                                                  
+   }).listen(3000, () => console.log('Recipe server on 3000'));                                                                                                  
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Event‑Driven Application (same as Slip 6 Q2)                                                                                                         
+   Re‑use `main.js` (standalone event emitter).                                                                                                                  
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 12 (Page 12)                                                                                                                                          
+   ### Q1 – AngularJS SPA Syllabus with ng‑view                                                                                                                  
+   **File: `syllabus.html`** (requires `angular-route`)                                                                                                          
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                  
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>                                                            
+   <body ng-app="myApp">                                                                                                                                         
+     <a href="#!syllabus">Syllabus</a>                                                                                                                           
+     <div ng-view></div>                                                                                                                                         
+                                                                                                                                                                 
+     <script>                                                                                                                                                    
+       var app = angular.module('myApp', ['ngRoute']);                                                                                                           
+       app.config(function($routeProvider) {                                                                                                                     
+         $routeProvider                                                                                                                                          
+         .when('/syllabus', {                                                                                                                                    
+           template: '<h2>M.Sc (CS) Sem II Syllabus</h2><ul><li>Full Stack Development</li><li>Data Science</li><li>AI</li></ul>'                                
+         })                                                                                                                                                      
+         .otherwise({redirectTo: '/syllabus'});                                                                                                                  
+       });                                                                                                                                                       
+     </script>                                                                                                                                                   
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – AngularJS Student Table (same as Slip 7 Q2)                                                                                                          
+   Re‑use `table.html`.                                                                                                                                          
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 13 (Page 13)                                                                                                                                          
+   ### Q1 – Node.js Convert "Hello World!" to Uppercase                                                                                                          
+   **File: `uppercase.js`**                                                                                                                                      
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     res.writeHead(200, {'Content-Type': 'text/plain'});                                                                                                         
+     res.end("Hello World!".toUpperCase());                                                                                                                      
+   }).listen(3000, () => console.log('Running on 3000'));                                                                                                        
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Angular SPA Details Validation (Name, Mobile, Pin, Email)                                                                                            
+   Create Angular project: `ng new slip19 --defaults` then replace component files.                                                                              
+                                                                                                                                                                 
+   **`src/app/app.component.ts`**:                                                                                                                               
+   ```typescript                                                                                                                                                 
+   import { Component } from '@angular/core';                                                                                                                    
+                                                                                                                                                                 
+   @Component({                                                                                                                                                  
+     selector: 'app-root',                                                                                                                                       
+     templateUrl: './app.component.html',                                                                                                                        
+     styleUrls: ['./app.component.css']                                                                                                                          
+   })                                                                                                                                                            
+   export class AppComponent {                                                                                                                                   
+     name = '';                                                                                                                                                  
+     address = '';                                                                                                                                               
+     mobile = '';                                                                                                                                                
+     pincode = '';                                                                                                                                               
+     email = '';                                                                                                                                                 
+     message = '';                                                                                                                                               
+                                                                                                                                                                 
+     validateForm() {                                                                                                                                            
+       if (!/^[A-Za-z ]+$/.test(this.name)) {                                                                                                                    
+         alert("Name Error"); return;                                                                                                                            
+       }                                                                                                                                                         
+       if (!/^\d{10}$/.test(this.mobile)) {                                                                                                                      
+         alert("Mobile Error"); return;                                                                                                                          
+       }                                                                                                                                                         
+       if (!/^\d{6}$/.test(this.pincode)) {                                                                                                                      
+         alert("Pin Error"); return;                                                                                                                             
+       }                                                                                                                                                         
+       // Validate email: must have exactly one @, contains dot                                                                                                  
+       if (!/^[^@]+@[^@]+\.[^@]+$/.test(this.email) || (this.email.match(/@/g)||[]).length !== 1) {                                                              
+         alert("Email Error"); return;                                                                                                                           
+       }                                                                                                                                                         
+       this.message = "All Details Validated Successfully";                                                                                                      
+     }                                                                                                                                                           
+   }                                                                                                                                                             
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   **`src/app/app.component.html`**:                                                                                                                             
+   ```html                                                                                                                                                       
+   <h2>Student Details Validation</h2>                                                                                                                           
+   <form (ngSubmit)="validateForm()">                                                                                                                            
+     Name: <input type="text" [(ngModel)]="name" name="n"><br><br>                                                                                               
+     Address: <textarea [(ngModel)]="address" name="a" required></textarea><br><br>                                                                              
+     Mobile: <input type="text" [(ngModel)]="mobile" name="m"><br><br>                                                                                           
+     Pin: <input type="text" [(ngModel)]="pincode" name="p"><br><br>                                                                                             
+     Email: <input type="text" [(ngModel)]="email" name="e"><br><br>                                                                                             
+     <button type="submit">Submit</button>                                                                                                                       
+   </form>                                                                                                                                                       
+   <h3>{{message}}</h3>                                                                                                                                          
+   ```                                                                                                                                                           
+   Don’t forget to import `FormsModule`.                                                                                                                         
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 14 (Page 14)                                                                                                                                          
+   ### Q1 – Create Movie Database and Table (Using Array Simulation)                                                                                             
+   **File: `createMovieTable.js`**                                                                                                                               
+   ```javascript                                                                                                                                                 
+   // Simulating a movie database and films table with an array                                                                                                  
+   const movieDB = {                                                                                                                                             
+     films: []                                                                                                                                                   
+   };                                                                                                                                                            
+                                                                                                                                                                 
+   function addFilm(id, title) {                                                                                                                                 
+     movieDB.films.push({ id, title });                                                                                                                          
+   }                                                                                                                                                             
+                                                                                                                                                                 
+   addFilm(1, "Inception");                                                                                                                                      
+   addFilm(2, "Interstellar");                                                                                                                                   
+   addFilm(3, "Dunkirk");                                                                                                                                        
+                                                                                                                                                                 
+   console.log("Movie database created, films table populated:");                                                                                                
+   console.table(movieDB.films);                                                                                                                                 
+                                                                                                                                                                 
+   // Example query: select all films                                                                                                                            
+   console.log("All films:", movieDB.films);                                                                                                                     
+   ```                                                                                                                                                           
+   Run: `node createMovieTable.js`                                                                                                                               
+                                                                                                                                                                 
+   ### Q2 – Express.js File Download Prompt                                                                                                                      
+   **File: `downloadApp.js`** (requires `npm install express`)                                                                                                   
+   ```javascript                                                                                                                                                 
+   const express = require('express');                                                                                                                           
+   const app = express();                                                                                                                                        
+                                                                                                                                                                 
+   app.get('/', function(req, res) {                                                                                                                             
+     res.send("Hello for download");                                                                                                                             
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   app.get('/download', function(req, res) {                                                                                                                     
+     res.download('a.txt');  // ensure a.txt exists                                                                                                              
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   app.listen(8082, () => {                                                                                                                                      
+     console.log('Server running on port 8082');                                                                                                                 
+   });                                                                                                                                                           
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 15 (Page 15)                                                                                                                                          
+   ### Q1 – Node.js Employee Registration Form Validation                                                                                                        
+   Two files: `index.html` and `employeeReg.js` (server).                                                                                                        
+                                                                                                                                                                 
+   **`index.html`**:                                                                                                                                             
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <head>                                                                                                                                                        
+     <title>Employee Registration</title>                                                                                                                        
+   </head>                                                                                                                                                       
+   <body>                                                                                                                                                        
+     <h1>Employee Registration Form</h1>                                                                                                                         
+     <form action="/register" method="post">                                                                                                                     
+       <label>Name:</label><br>                                                                                                                                  
+       <input type="text" name="name" required><br>                                                                                                              
+       <label>Email:</label><br>                                                                                                                                 
+       <input type="email" name="email" required><br>                                                                                                            
+       <label>Password:</label><br>                                                                                                                              
+       <input type="password" name="password" required><br>                                                                                                      
+       <input type="submit" value="Register">                                                                                                                    
+     </form>                                                                                                                                                     
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   **`employeeReg.js`**:                                                                                                                                         
+   ```javascript                                                                                                                                                 
+   const http = require('http');                                                                                                                                 
+   const fs = require('fs');                                                                                                                                     
+   const qs = require('querystring');                                                                                                                            
+                                                                                                                                                                 
+   const server = http.createServer((req, res) => {                                                                                                              
+     if (req.method === 'GET' && req.url === '/') {                                                                                                              
+       fs.readFile('index.html', (err, data) => {                                                                                                                
+         if (err) {                                                                                                                                              
+           res.writeHead(500);                                                                                                                                   
+           res.end('Internal Server Error');                                                                                                                     
+           return;                                                                                                                                               
+         }                                                                                                                                                       
+         res.writeHead(200, { 'Content-Type': 'text/html' });                                                                                                    
+         res.end(data);                                                                                                                                          
+       });                                                                                                                                                       
+     } else if (req.method === 'POST' && req.url === '/register') {                                                                                              
+       let body = '';                                                                                                                                            
+       req.on('data', chunk => { body += chunk.toString(); });                                                                                                   
+       req.on('end', () => {                                                                                                                                     
+         const formData = qs.parse(body);                                                                                                                        
+         const name = formData['name'];                                                                                                                          
+         const email = formData['email'];                                                                                                                        
+         const password = formData['password'];                                                                                                                  
+         if (!name || !email || !password) {                                                                                                                     
+           res.writeHead(400);                                                                                                                                   
+           res.end('Please fill out all fields');                                                                                                                
+         } else {                                                                                                                                                
+           res.writeHead(200);                                                                                                                                   
+           res.end('Registration successful!');                                                                                                                  
+         }                                                                                                                                                       
+       });                                                                                                                                                       
+     } else {                                                                                                                                                    
+       res.writeHead(404);                                                                                                                                       
+       res.end('Not Found');                                                                                                                                     
+     }                                                                                                                                                           
+   }).listen(3032, () => console.log('Server on 3032'));                                                                                                         
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Event‑Driven Application (same as Slip 6 Q2)                                                                                                         
+   Re‑use `main.js` (standalone).                                                                                                                                
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 16 (Page 16)                                                                                                                                          
+   ### Q1 – Serve a Web Page from a File                                                                                                                         
+   **File: `servePage.js`**                                                                                                                                      
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   var fs = require('fs');                                                                                                                                       
+   http.createServer(function (req, res) {                                                                                                                       
+     fs.readFile('a.txt', function(err, data) {                                                                                                                  
+       res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                        
+       res.write(data);                                                                                                                                          
+       return res.end();                                                                                                                                         
+     });                                                                                                                                                         
+   }).listen(8081, () => { console.log("Port 8081 active") });                                                                                                   
+   ```                                                                                                                                                           
+   Place `a.txt` with HTML content in the same folder.                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Build Your Own Node.js Module (Return Date/Time)                                                                                                     
+   Two files:                                                                                                                                                    
+                                                                                                                                                                 
+   **`modules.js`**:                                                                                                                                             
+   ```javascript                                                                                                                                                 
+   function datetime() {                                                                                                                                         
+     let dt = new Date();                                                                                                                                        
+     let date = ("0" + dt.getDate()).slice(-2);                                                                                                                  
+     let month = ("0" + (dt.getMonth() + 1)).slice(-2);                                                                                                          
+     let year = dt.getFullYear();                                                                                                                                
+     let hours = dt.getHours();                                                                                                                                  
+     let minutes = dt.getMinutes();                                                                                                                              
+     let seconds = dt.getSeconds();                                                                                                                              
+     return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;                                                                       
+   }                                                                                                                                                             
+   module.exports = { datetime };                                                                                                                                
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   **`slip10.js`** (main server file):                                                                                                                           
+   ```javascript                                                                                                                                                 
+   var http = require('http');                                                                                                                                   
+   var dt = require('./modules');                                                                                                                                
+                                                                                                                                                                 
+   var server = http.createServer(function(req, res) {                                                                                                           
+     res.writeHead(200, {'Content-Type': 'text/html'});                                                                                                          
+     res.write('Current date and time is ' + dt.datetime());                                                                                                     
+     res.end();                                                                                                                                                  
+   });                                                                                                                                                           
+                                                                                                                                                                 
+   server.listen(1234, () => console.log("Server on 1234"));                                                                                                     
+   ```                                                                                                                                                           
+   Run `node slip10.js`, open `http://localhost:1234`.                                                                                                           
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 17 (Page 17)                                                                                                                                          
+   ### Q1 – eLearning System (same as Slip 3 Q1)                                                                                                                 
+   Re‑use `slip4.html` and `slip4.js`.                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Angular SPA Username/Password Validation (same as Slip 4 Q2)                                                                                         
+   Re‑use the Angular project from Slip 4.                                                                                                                       
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   ## Slip 18 (Page 18)                                                                                                                                          
+   ### Q1 – AngularJS Show Current Page Location                                                                                                                 
+   **File: `location.html`**                                                                                                                                     
+   ```html                                                                                                                                                       
+   <!DOCTYPE html>                                                                                                                                               
+   <html>                                                                                                                                                        
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>                                                                  
+   <body ng-app="myApp" ng-controller="myCtrl">                                                                                                                  
+     <h3>URL: {{myUrl}}</h3>                                                                                                                                     
+     <script>                                                                                                                                                    
+       var app = angular.module('myApp', []);                                                                                                                    
+       app.controller('myCtrl', function($scope, $location) {                                                                                                    
+         $scope.myUrl = $location.absUrl();                                                                                                                      
+       });                                                                                                                                                       
+     </script>                                                                                                                                                   
+   </body>                                                                                                                                                       
+   </html>                                                                                                                                                       
+   ```                                                                                                                                                           
+                                                                                                                                                                 
+   ### Q2 – Event‑Driven Application (same as Slip 6 Q2)                                                                                                         
+   Re‑use `main.js` (standalone).                                                                                                                                
+                                                                                                                                                                 
+   ---                                                                                                                                                           
+                                                                                                                                                                 
+   **All 18 slips are fully answered. No question skipped. Database tasks are handled with arrays. Every code block follows the requested format. **             
+                                                                                                                                                                 
+                                                                                                                                                                 
+                                                                                                                                                                 
+   create all file for this according to slips (folder of slip number -> q1 and q2) inside each code comment out the steps to crete a file and run the progrm    
+   like(ng new file name, ng serve, node filename etc)                                                                                                           
+                                                                                                                                                                 
+   c:\Users\HP\Desktop\Textbooks\Practical Solutions\FSD\Practice\Final_SlipsSol                                                                                 
+   use this folder 

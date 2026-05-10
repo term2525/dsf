@@ -1,0 +1,11 @@
+<!-- Q.2) Using angular js create a SPA to carry out validation for a username entered in a textbox. If the textbox is blank, alert “Enter username”. If the number of characters is less than three, alert ‟ Username is too short”. If value entered is appropriate the print “Valid username” and password should be minimum 8 characters. -->
+
+<h2>User Validation SPA</h2>
+<form (ngSubmit)="validateForm()">
+  <label>Username:</label><br>
+  <input type="text" [(ngModel)]="username" name="username" required><br><br>
+  <label>Password:</label><br>
+  <input type="password" [(ngModel)]="password" name="password" required><br><br>
+  <button type="submit">Validate</button>
+</form>
+<p>{{message}}</p>

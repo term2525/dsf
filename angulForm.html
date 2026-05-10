@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <h2 ng-show="isEvening"> Good Evening</h2>
+    <h2 ng-show="isAfternoon"> Good Afternoon</h2>
+    <h2 ng-show="isMorning"> Good Morning</h2>
+    <form name="studentForm" novalidate>
+        <input type="text" ng-model="f" name="f" ng-pattern="/^[a-zA-Z]*$/"><br><br>
+        <input type="text" ng-model="l" name="l" ng-pattern="/^[a-zA-Z]*$/"><br><br>
+        <input type="number" ng-model="age" name="age" min="18" max="60"><br><br>
+        <button ng-disabled="studentForm.$invalid">Register</button>
+    </form>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope){
+            var h= new Date().getHours();
+            $scope.isMorning= h < 12;
+            $scope.isAfternoon = h >=12 && h < 17;
+            $scope.isEvening = h >= 17;
+        });
+    </script>
+    
+</body>
+</html>
